@@ -1,0 +1,46 @@
+([^wh]|^)as a woman
+([^wh]|^)as a female
+([^wh]|^)as a gal
+([^wh]|^)as a dudette
+([^wh]|^)as a lady
+([^wh]|^)as a girl
+([^wh]|^)as a mother
+([^wh]|^)as a grandmother
+([^wh]|^)as a stepmother
+([^wh]|^)as a sister
+([^wh]|^)as a stepsister
+([^wh]|^)as a halfsister
+([^wh]|^)as a[n ]{1,2}aunt
+i[a' ]{0,2}m a woman
+i[a' ]{0,2}m a female
+i[a' ]{0,2}m female
+i[a' ]{0,2}m a mother
+i[a' ]{0,2}m a grandmother
+i[a' ]{0,2}m a stepmother
+i[a' ]{0,2}m a sister
+i[a' ]{0,2}m a stepsister
+i[a' ]{0,2}m a halfsister
+i[a' ]{0,2}m a[n ]{1,2}aunt
+i[a' ]{0,2}m a gal
+i[a' ]{0,2}m a lady
+i[a' ]{0,2}m a girl
+i[a' ]{0,2}m not a man
+i[a' ]{0,2}m not a male
+i[a' ]{0,2}m not male
+i[a' ]{0,2}m not a dude
+i[a' ]{0,2}m not a guy
+i[a' ]{0,2}m not a boy
+i[a' ]{0,2}m not a lesbian
+ [0-9]{2}\/f([ .,:;\/\)]|emale)
+my vagina
+my pussy
+my clit
+my labia
+my vulva
+my tit 
+my tits
+my boob
+my period
+my uterus
+my ovary
+my ovaries

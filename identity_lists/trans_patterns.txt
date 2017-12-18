@@ -1,0 +1,9 @@
+([^wh]|^)as a tran
+([^wh]|^)as a mtf
+([^wh]|^)as a ftm
+([^wh]|^)as a gender
+([^wh]|^)as gender
+i[a' ]{0,2}m a tran
+i[a' ]{0,2}m tran
+i[a' ]{0,2}m a gender
+i[a' ]{0,2}m gender

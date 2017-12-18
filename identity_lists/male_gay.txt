@@ -1,0 +1,8 @@
+([!w]|^)as a gay man
+([!w]|^)as a gay male
+([!w]|^)as a gay boy
+([!w]|^)as a gay father
+([!w]|^)as a gay brother
+i[a' ]{0,2}m a gay man
+i[a' ]{0,2}m a gay male
+i[a' ]{0,2}m a gay boy

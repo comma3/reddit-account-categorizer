@@ -1,0 +1,8 @@
+([!w]|^)as a straight woman
+([!w]|^)as a straight female
+([!w]|^)as a straight girl
+([!w]|^)as a straight mother
+([!w]|^)as a straight sister
+i[a' ]{0,2}m a straight woman
+i[a' ]{0,2}m a straight female
+i[a' ]{0,2}m a straight girl

@@ -1,0 +1,8 @@
+([!w]|^)as a straight man
+([!w]|^)as a straight male
+([!w]|^)as a straight boy
+([!w]|^)as a straight father
+([!w]|^)as a straight brother
+i[a' ]{0,2}m a straight man
+i[a' ]{0,2}m a straight male
+i[a' ]{0,2}m a straight boy

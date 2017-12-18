@@ -1,0 +1,41 @@
+([^wh]|^)as a man
+([^wh]|^)as a male
+([^wh]|^)as a guy
+([^wh]|^)as a dude
+([^wh]|^)as a gentleman
+([^wh]|^)as a boy
+([^wh]|^)as a father
+([^wh]|^)as a grandfather
+([^wh]|^)as a stepfather
+([^wh]|^)as a brother
+([^wh]|^)as a stepbrother
+([^wh]|^)as a halfbrother
+([^wh]|^)as a[n ]{1,2}uncle
+i[a' ]{0,2}m a man
+i[a' ]{0,2}m a male
+i[a' ]{0,2}m male
+i[a' ]{0,2}m a father
+i[a' ]{0,2}m a grandfather
+i[a' ]{0,2}m a stepfather
+i[a' ]{0,2}m a brother
+i[a' ]{0,2}m a stepbrother
+i[a' ]{0,2}m a halfbrother
+i[a' ]{0,2}m a[n ]{1,2}uncle
+i[a' ]{0,2}m a guy
+i[a' ]{0,2}m a dude
+i[a' ]{0,2}m a boy
+i[a' ]{0,2}m not a woman
+i[a' ]{0,2}m not a female
+i[a' ]{0,2}m not female
+i[a' ]{0,2}m not a lady
+i[a' ]{0,2}m not a girl
+i[a' ]{0,2}m not a gal
+ [0-9]{2}\/m([ .,:;\/\)]|ale)
+^am guy
+my penis
+my dick
+my balls
+my scrotum
+my testicles
+my testes
+my prostate

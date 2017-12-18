@@ -1,0 +1,10 @@
+([^wh]|^)as a gay woman
+([^h]|^)as a lesbian
+([^wh]|^)as a gay female
+([^wh]|^)as a gay girl
+([^wh]|^)as a gay mother
+([^wh]|^)as a gay sister
+i[a' ]{0,2}m a lesbian
+i[a' ]{0,2}m a gay woman
+i[a' ]{0,2}m a gay female
+i[a' ]{0,2}m a gay girl
