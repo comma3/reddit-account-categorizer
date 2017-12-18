@@ -21,7 +21,7 @@ conn = sqlite3.connect('D:\\reddit\\reddit_user_data.sqlite3')
 curr = conn.cursor()
 
 # Exclude unused events and corrupted data
-curr.execute("""SELECT user, body 
+curr.execute("""SELECT user, body
                 FROM comments
                 JOIN users
                 ON users.username = comments.user

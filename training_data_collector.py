@@ -12,7 +12,6 @@ def read_patterns(filename):
     # input files have ' so be sure to use " throughout.
     with open(filename) as file:
         patterns = [row for row in file]
-
     return "|".join("(?:%s)" % p.replace("\n","") for p in patterns)
 
 def load_regex():
@@ -45,9 +44,9 @@ def remove_quotes(comment):
     # Don't want to attribute gender to users based on quotes
     # All numeric answers are read as float/int, so we need to cast them to
     # string to avoid errors
-    quote_stripped_comment = re.sub(r'>.*', '', str(comment[1]).lower())
-    # This approach didn't seem to catch nested quotes. seemed easier/more complete than making a complex regex
-    # to just loop if a quote is found
+    quote_stripped_comment = re.sub(r'>.*', '', str(comment).lower())
+    # This approach didn't seem to catch nested quotes. seemed easier/more
+    # complete to loop if a nested quote is found than making a complex regex
     while '>' in quote_stripped_comment:
         print(quote_stripped_comment)
         quote_stripped_comment = re.sub(r'>.*', '', quote_stripped_comment)
@@ -69,7 +68,7 @@ def get_comments(new_redditors):
             comments.append([comment.body, comment.score, comment.created_utc, comment.subreddit.display_name])
             subreddits.add(comment.subreddit.display_name)
         author = comment.author.name
-        results[author] = (comments, gender, orientation, age, subreddits)
+        results[author] = [comments, gender, orientation, age, subreddits]
     return results
 
 def add_to_db(db, results):
@@ -89,23 +88,23 @@ def add_to_db(db, results):
                         )
                         """)
         curr.execute("""CREATE TABLE
-                            comments (
-                            user string,
-                            body string,
-                            score int,
-                            date string,
-                            subreddit string
-                            )
-                            """)
+                        comments (
+                        user string,
+                        body string,
+                        score int,
+                        date string,
+                        subreddit string
+                        )
+                        """)
 
     except sqlite3.OperationalError:
         pass
 
-    for key, value in users.items():
-        user = (key, value[1], value[2], ','.join(value[3]))
+    for key, value in results.items():
+        user = (key, value[1], value[2], value[3], ','.join(value[4]))
         curr.execute("""INSERT INTO users
                     (username, gender, orientation, age, subreddits)
-                    VALUES (?,?,?,?)
+                    VALUES (?,?,?,?,?)
                     """, user)
         for comment in value[0]:
             curr.execute("""INSERT INTO comments
@@ -124,7 +123,7 @@ if __name__ == '__main__':
     subs = 'all'
     # Make sure we don't get more from users already in the DB
     new_redditors = set()
-    used_redditors = set() #get_users(db)
+    used_redditors = set(get_users(db))
 
     match_strings = load_regex()
     reddit = praw.Reddit(bot)
@@ -132,19 +131,19 @@ if __name__ == '__main__':
     start = int(time.time())
     i = 0 # Can't enumerate on stream
     for comment in subreddit.stream.comments():
-        i+ = 1
+        i += 1
         if i % 300 == 0:
             print('Elapsed time: ', int(time.time()) - start)
         if comment.author in used_redditors:
             continue
-        elif match_strings.search(comment.body):
+        elif match_strings.search(remove_quotes(comment.body)):
             new_redditors.add(comment.author)
             used_redditors.add(comment.author)
             print('================================')
             print(comment.body) # matched comment
-            print(match_strings.search(comment.body)[0]) # matched string
+            print(match_strings.search(remove_quotes(comment.body))[0]) # matched string
             print('================================')
-        if len(new_redditors) > 10:
+        if len(new_redditors) > 20:
             # Can't multithread here without a new bot
             # New bot probably against TOS...
             # PRAW didn't seem to wait long enough here before I start requesting user comments
