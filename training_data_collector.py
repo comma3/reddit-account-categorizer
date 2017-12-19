@@ -2,7 +2,6 @@ import re
 import time
 import sqlite3
 import glob
-
 import praw
 
 def read_patterns(filename):
@@ -37,7 +36,6 @@ def get_users(db):
                     """)
     temp_users = curr.fetchall()
     conn.close()
-
     return [user for user in temp_users]
 
 def remove_quotes(comment):
@@ -96,7 +94,6 @@ def add_to_db(db, results):
                         subreddit string
                         )
                         """)
-
     except sqlite3.OperationalError:
         pass
 
@@ -121,10 +118,10 @@ if __name__ == '__main__':
     db = '/data/accounts.db'
     bot = 'bot1'
     subs = 'all'
+    duration = 50000  # search length in seconds
     # Make sure we don't get more from users already in the DB
     new_redditors = set()
     used_redditors = set(get_users(db))
-
     match_strings = load_regex()
     reddit = praw.Reddit(bot)
     subreddit = reddit.subreddit(subs)
@@ -133,7 +130,9 @@ if __name__ == '__main__':
     for comment in subreddit.stream.comments():
         i += 1
         if i % 300 == 0:
-            print('Elapsed time: ', int(time.time()) - start)
+            elapsed = int(time.time()) - start
+            print('Elapsed time: ',  elapsed)
+            print('Time remaining: ', duration - elapsed)
         if comment.author in used_redditors:
             continue
         elif match_strings.search(remove_quotes(comment.body)):
@@ -141,20 +140,19 @@ if __name__ == '__main__':
             used_redditors.add(comment.author)
             print('================================')
             print(comment.body) # matched comment
-            print(match_strings.search(remove_quotes(comment.body))[0]) # matched string
+            print(match_strings.search(remove_quotes(comment.body)).goup(0)) # matched string
             print('================================')
         if len(new_redditors) > 20:
             # Can't multithread here without a new bot
             # New bot probably against TOS...
             # PRAW didn't seem to wait long enough here before I start requesting user comments
             # So we manually wait the reddit-required 2 seconds between requests
-            print(new_redditors)
             time.sleep(2)
             results = get_comments(new_redditors)
             # Could multithread here but this probably takes a couple
             # of ms
             add_to_db(db, results)
             new_redditors = set()
-        if time.time() > start + 50000:
-            # Did this approach rather than while to save an indent level
+        if time.time() > start + duration:
+            # Save an indent level
             break
