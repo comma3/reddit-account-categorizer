@@ -140,7 +140,7 @@ if __name__ == '__main__':
             used_redditors.add(comment.author)
             print('================================')
             print(comment.body) # matched comment
-            print(match_strings.search(remove_quotes(comment.body)).goup(0)) # matched string
+            print(match_strings.search(remove_quotes(comment.body)).group(0)) # matched string
             print('================================')
         if len(new_redditors) > 20:
             # Can't multithread here without a new bot
