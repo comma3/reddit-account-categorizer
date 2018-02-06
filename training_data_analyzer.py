@@ -1,6 +1,6 @@
 import re
-import MFLibrary as mf
 import sqlite3
+
 
 
 def read_patterns(filename):
@@ -16,8 +16,9 @@ male_straight = re.compile(read_patterns('./identity_lists/male_straight.txt'))
 female_patterns = re.compile(read_patterns('./identity_lists/female_patterns.txt'))
 female_gay = re.compile(read_patterns('./identity_lists/female_gay.txt'))
 female_straight = re.compile(read_patterns('./identity_lists/female_straight.txt'))
+trans = re.compile(read_patterns('./identity_lists/trans_patterns.txt'))
 
-conn = sqlite3.connect('D:\\reddit\\reddit_user_data.sqlite3')
+conn = sqlite3.connect('/data/accounts.db')
 curr = conn.cursor()
 
 # Exclude unused events and corrupted data
@@ -40,7 +41,9 @@ curr.execute("""UPDATE users
 print(len(comments))
 quotes = []
 user_scores = {}
-for comment in comments:
+for i, comment in enumerate(comments):
+    if i % 1000 == 0:
+        print(i)
     # Don't want to attribute gender to users based on quotes
     # Numeric answers are read as float/int, so we need to cast them to string
     quote_stripped_comment = re.sub(r'>.*', '', str(comment[1]).lower())
@@ -51,48 +54,59 @@ for comment in comments:
         quote_stripped_comment = re.sub(r'>.*', '', quote_stripped_comment)
     if male_patterns.search(quote_stripped_comment):
         try:
-            user_scores[comment[0]]['male'] = user_scores[comment[0]]['male'] + 1
+            user_scores[comment[0]]['male'] += 1
         except KeyError:
             user_scores[comment[0]] = {'male': 1}
         quotes.append([comment[1], male_patterns.search(str(comment[1]).lower())])
     elif male_straight.search(quote_stripped_comment):
         try:
-            user_scores[comment[0]]['male'] = user_scores[comment[0]]['male'] + 1
+            user_scores[comment[0]]['male'] += 1
         except KeyError:
             user_scores[comment[0]] = {'male': 1}
         quotes.append([comment[1], male_straight.search(str(comment[1]).lower())])
         # Can add straight/gay to dictionary if it becomes relevant
     elif male_gay.search(quote_stripped_comment):
         try:
-            user_scores[comment[0]]['gmale'] = user_scores[comment[0]]['gmale'] + 1
+            user_scores[comment[0]]['gmale'] += 1
         except KeyError:
             user_scores[comment[0]] = {'gmale': 1}
         quotes.append([comment[1], male_gay.search(str(comment[1]).lower())])
     elif female_patterns.search(quote_stripped_comment):
         try:
-            user_scores[comment[0]]['female'] = user_scores[comment[0]]['female'] + 1
+            user_scores[comment[0]]['female'] += 1
         except KeyError:
             user_scores[comment[0]] = {'female': 1}
         quotes.append([comment[1], female_patterns.search(str(comment[1]).lower())])
     elif female_straight.search(quote_stripped_comment):
         try:
-            user_scores[comment[0]]['female'] = user_scores[comment[0]]['female'] + 1
+            user_scores[comment[0]]['female'] += 1
         except KeyError:
             user_scores[comment[0]] = {'female': 1}
         quotes.append([comment[1], female_straight.search(str(comment[1]).lower())])
     elif female_gay.search(quote_stripped_comment):
         try:
-            user_scores[comment[0]]['gfemale'] = user_scores[comment[0]]['gfemale'] + 1
+            user_scores[comment[0]]['gfemale'] += 1
         except KeyError:
             user_scores[comment[0]] = {'gfemale': 1}
         quotes.append([comment[1], female_gay.search(str(comment[1]).lower())])
+    elif trans.search(quote_stripped_comment):
+        try:
+            user_scores[comment[0]]['trans'] += 1
+        except KeyError:
+            user_scores[comment[0]] = {'trans': 1}
+        quotes.append([comment[1], trans.search(str(comment[1]).lower())])
+
+
 print(user_scores)
 print(len(user_scores))
-mf.csv.write_list('quotes.csv', quotes)
-mf.csv.write_dict('userdict.csv', user_scores)
+#mf.csv.write_list('quotes.csv', quotes)
+#mf.csv.write_dict('userdict.csv', user_scores)
 
 
 for key,entry in user_scores.items():
+    if 'trans' in entry.keys():
+        # We're skipping trans users for now 
+        continue
     try:
         male = entry['male']
     except:
